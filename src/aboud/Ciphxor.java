@@ -4,7 +4,7 @@ import java.io.*;
 
 @SuppressWarnings("WeakerAccess")
 
-class Ciphxor {
+public class Ciphxor {
     public static byte[] keyToByteArray(String key) {
         String temp;
         byte[] res = new byte[(int)Math.ceil((float)key.length()/2)];
@@ -21,17 +21,12 @@ class Ciphxor {
         return res;
     }
 
-    private static void recode(FileInputStream inputStream, String outputFileName, String ekey, String dkey)
+    private static void recode(FileInputStream inputStream, String outputFileName, String finalKey)
             throws IOException {
-        FileOutputStream out = new FileOutputStream(outputFileName);
-        byte[] keyarr;
 
-        if (ekey != "" && dkey != "") {
-            throw new IOException("Enter Just One Key");
-        }
-        if (ekey != "" || dkey != "") {
-            if(ekey!="") keyarr = keyToByteArray(ekey);
-            else keyarr = keyToByteArray(dkey);
+        byte[] keyarr;
+        try ( FileOutputStream out = new FileOutputStream(outputFileName)){
+            keyarr = keyToByteArray(finalKey);
             byte temp;
             byte res;
             int i = 0;
@@ -41,18 +36,14 @@ class Ciphxor {
                 i = i % keyarr.length;
                 out.write(res);
             }
-        } else {
-            throw new IOException("No Key");
         }
-        out.flush();
-        out.close();
-        inputStream.close();
+
     }
 
-    public static void recode(String inputFileName, String outputFileName, String ekey, String dkey)
+    public static void recode(String inputFileName, String outputFileName, String finalKey)
             throws IOException {
         try (FileInputStream inputStream = new FileInputStream(inputFileName)) {
-            Ciphxor.recode(inputStream, outputFileName, ekey, dkey);
+            Ciphxor.recode(inputStream, outputFileName, finalKey);
         }
     }
 }
