@@ -38,26 +38,29 @@ public class CiphxorLauncher {
             System.err.println(e.getMessage());
             System.err.println("java -jar Сiphxor.jar [-c Encryption][-d Decryption] InputName [-o OutputName]");
             parser.printUsage(System.err);
-            return;
+            System.exit(1);
         }
         try {
             String finalKey = check(inputEncryption, inputDecryption);
             Ciphxor.recode(inputFileName, outputFileName, finalKey);
             System.out.println("Done");
-        } catch (IOException e) {
+        } catch (IllegalArgumentException | IOException e) {
             System.err.println(e.getMessage());
+            System.exit(1);
         }
     }
 
-    private String check(String ekey,String dkey) throws IOException{
+    private String check(String ekey,String dkey) throws IllegalArgumentException{
         if (ekey != null && dkey != null) {
-            throw new IOException("Enter Just One Key");
+            throw new IllegalArgumentException("Enter Just One Key");
         }
         if (ekey  != null || dkey  != null) {
             if(ekey!= null) return ekey;
             else return dkey;
         } else {
-            throw new IOException("No Key");
+            throw new IllegalArgumentException("No Key");
+
         }
+
     }
 }

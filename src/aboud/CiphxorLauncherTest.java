@@ -26,5 +26,13 @@ class CiphxorLauncherTest {
         byte[] res = Files.readAllBytes(Paths.get("Test3.txt"));
         assertEquals("abccdefg", new String(res));
     }
+    @Test
+    void xorandxo()throws IOException{
+        Ciphxor.recode("Test.txt","Youth.txt", "123456");
+        Ciphxor.recode("Youth.txt","Youth.txt.txt", "123456");
+        byte[] res = Files.readAllBytes(Paths.get("Test.txt"));
+        byte[] exp = Files.readAllBytes(Paths.get("Youth.txt.txt"));
+        assertEquals(new String(exp), new String(res));
+    }
 
 }
